@@ -124,33 +124,33 @@ rightdisp=DP-3
 leftdisp=DP-4
 maindisp=eDP-1
 x-main-screen(){
-xrandr --output $maindisp --auto
-xrandr --output $leftdisp --off
-xrandr --output $leftdisp
+xrandr --output $maindisp --auto 2>/dev/null
+xrandr --output $leftdisp --off 2>/dev/null
+xrandr --output $leftdisp 2>/dev/null
 }
 
 x-single-screen(){
-xrandr --output $maindisp --off
-xrandr --output $leftdisp --off
-xrandr --output $rightdisp --auto
+xrandr --output $maindisp --off 2>/dev/null
+xrandr --output $leftdisp --off 2>/dev/null
+xrandr --output $rightdisp --auto 2>/dev/null
 }
 x-double-screen(){
-xrandr --output $maindisp --off
-xrandr --output $leftdisp --auto
-xrandr --output $rightdisp --auto
-xrandr --output $leftdisp --primary
-xrandr --output $leftdisp --left-of $rightdisp
+xrandr --output $maindisp --off 2>/dev/null
+xrandr --output $leftdisp --auto 2>/dev/null
+xrandr --output $rightdisp --auto 2>/dev/null
+xrandr --output $leftdisp --primary 2>/dev/null
+xrandr --output $leftdisp --left-of $rightdisp 2>/dev/null
 }
 s-main-screen(){
-sway output $main enable > /dev/null
-sway output $rightdisp disable > /dev/null
-sway output $leftdisp disable > /dev/null
+sway output $main enable > /dev/null 2>&1
+sway output $rightdisp disable > /dev/null 2>&1
+sway output $leftdisp disable > /dev/null 2>&1
 }
 
 s-single-screen(){
-sway output $maindisp disable > /dev/null
-sway output $rightdisp enable > /dev/null
-sway output $leftdisp disable > /dev/null
+sway output $maindisp disable > /dev/null 2>&1
+sway output $rightdisp enable > /dev/null 2>&1
+sway output $leftdisp disable > /dev/null 2>&1
 }
 
 
