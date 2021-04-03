@@ -197,7 +197,6 @@ alias graph='git log --decorate --oneline --graph --all'
 alias texmake='latexmk -pdf -pvc -interaction=nonstopmode' 
 
 # alias for easycopy
-alias easycopy='xclip -i -selection clipboard'
 alias easypath='echo $(pwd) | xclip -i -selection clipboard'
 alias lastcomm='!$:p | xclip -i -selection clipboard'
 
@@ -207,13 +206,6 @@ alias easyopen='nemo $(pwd) &'
 alias getmonitors='xrandr | grep -w connected'
 alias sshcore='ssh m3c@10.1.0.1'
 #alias sshcore='ssh m3c@192.168.1.11'
-alias sshblinq='ssh -oHostKeyAlgorithms=+ssh-dss admin@192.168.1.44'
-alias ipa='ip -br -4 a'
-alias ipl='ip -br link'
-#export ETH0=enp0s25
-alias gettime='date +%Y-%m-%d-%H-%M-%S'
-alias dimmestscreen='brightnessctl set 1% > /dev/null'
-=======
 alias sshenb1='ssh -oHostKeyAlgorithms=+ssh-dss admin@192.168.1.44'
 alias sshenb2='ssh -oHostKeyAlgorithms=+ssh-dss admin@192.168.1.45'
 alias ipa='ip -br -4 a'
