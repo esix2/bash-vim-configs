@@ -120,26 +120,37 @@ fi
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
 
-rightdisp=DP-2-1
-leftdisp=DP-2-2
+rightdisp=DP-3
+leftdisp=DP-4
 maindisp=eDP-1
-main-screen(){
+x-main-screen(){
 xrandr --output $maindisp --auto
 xrandr --output $leftdisp --off
 xrandr --output $leftdisp
 }
 
-single-screen(){
+x-single-screen(){
 xrandr --output $maindisp --off
 xrandr --output $leftdisp --off
 xrandr --output $rightdisp --auto
 }
-double-screen(){
+x-double-screen(){
 xrandr --output $maindisp --off
 xrandr --output $leftdisp --auto
 xrandr --output $rightdisp --auto
 xrandr --output $leftdisp --primary
 xrandr --output $leftdisp --left-of $rightdisp
+}
+s-main-screen(){
+sway output $main enable > /dev/null
+sway output $rightdisp disable > /dev/null
+sway output $leftdisp disable > /dev/null
+}
+
+s-single-screen(){
+sway output $maindisp disable > /dev/null
+sway output $rightdisp enable > /dev/null
+sway output $leftdisp disable > /dev/null
 }
 
 
@@ -202,3 +213,11 @@ alias ipl='ip -br link'
 #export ETH0=enp0s25
 alias gettime='date +%Y-%m-%d-%H-%M-%S'
 alias dimmestscreen='brightnessctl set 1% > /dev/null'
+=======
+alias sshenb1='ssh -oHostKeyAlgorithms=+ssh-dss admin@192.168.1.44'
+alias sshenb2='ssh -oHostKeyAlgorithms=+ssh-dss admin@192.168.1.45'
+alias ipa='ip -br -4 a'
+alias ipl='ip -br link'
+alias gettime='date +%Y-%m-%d-%H-%M-%S'
+export PATH=$PATH:/usr/local/go/bin
+alias vlanrm='for i in {1..9}; do sudo ip l del vlan."$i"00 2>/dev/null; done'
