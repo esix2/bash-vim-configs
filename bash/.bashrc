@@ -16,8 +16,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=10000
+HISTFILESIZE=20000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -120,26 +120,37 @@ fi
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
 
-rightdisp=DP-2-1
-leftdisp=DP-2-2
+rightdisp=DP-3
+leftdisp=DP-4
 maindisp=eDP-1
-main-screen(){
+x-main-screen(){
 xrandr --output $maindisp --auto
 xrandr --output $leftdisp --off
 xrandr --output $leftdisp
 }
 
-single-screen(){
+x-single-screen(){
 xrandr --output $maindisp --off
 xrandr --output $leftdisp --off
 xrandr --output $rightdisp --auto
 }
-double-screen(){
+x-double-screen(){
 xrandr --output $maindisp --off
 xrandr --output $leftdisp --auto
 xrandr --output $rightdisp --auto
 xrandr --output $leftdisp --primary
 xrandr --output $leftdisp --left-of $rightdisp
+}
+s-main-screen(){
+sway output $main enable > /dev/null
+sway output $rightdisp disable > /dev/null
+sway output $leftdisp disable > /dev/null
+}
+
+s-single-screen(){
+sway output $maindisp disable > /dev/null
+sway output $rightdisp enable > /dev/null
+sway output $leftdisp disable > /dev/null
 }
 
 
@@ -186,6 +197,19 @@ alias graph='git log --decorate --oneline --graph --all'
 alias texmake='latexmk -pdf -pvc -interaction=nonstopmode' 
 
 # alias for easycopy
-alias easycopy='echo $(pwd) | xclip -i -selection clipboard'
+alias easypath='echo $(pwd) | xclip -i -selection clipboard'
+alias lastcomm='!$:p | xclip -i -selection clipboard'
+
 alias easypaste='xclip -selection clipboard -o'
 alias easyopen='nemo $(pwd) &'
+
+alias getmonitors='xrandr | grep -w connected'
+alias sshcore='ssh m3c@10.1.0.1'
+#alias sshcore='ssh m3c@192.168.1.11'
+alias sshenb1='ssh -oHostKeyAlgorithms=+ssh-dss admin@192.168.1.44'
+alias sshenb2='ssh -oHostKeyAlgorithms=+ssh-dss admin@192.168.1.45'
+alias ipa='ip -br -4 a'
+alias ipl='ip -br link'
+alias gettime='date +%Y-%m-%d-%H-%M-%S'
+export PATH=$PATH:/usr/local/go/bin
+alias vlanrm='for i in {1..9}; do sudo ip l del vlan."$i"00 2>/dev/null; done'
