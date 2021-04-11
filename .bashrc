@@ -120,7 +120,7 @@ fi
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
 
-rightdisp=DP-3
+rightdisp=HDMI-A-1#DP-3
 leftdisp=DP-4
 maindisp=eDP-1
 x-main-screen(){
@@ -153,22 +153,35 @@ sway output $rightdisp enable > /dev/null 2>&1
 sway output $leftdisp disable > /dev/null 2>&1
 }
 
+single-screen(){
+    if [ ! -z "$(pidof i3)" ]; then
+        xrandr --output $maindisp --off 2>/dev/null
+        xrandr --output $leftdisp --off 2>/dev/null
+    elif [ ! -z "$(pidof sway)" ]; then
+        sway output $main enable > /dev/null 2>&1
+        sway output $rightdisp disable > /dev/null 2>&1
+        sway output $leftdisp disable > /dev/null 2>&1
+    else 
+        echo "This commands does not work on any othe WM than i3 & sway"
+fi
+xrandr --output $rightdisp --auto 2>/dev/null
+}
 
 ## >>> conda initialize >>>
 ## !! Contents within this block are managed by 'conda init' !!
-#__conda_setup="$('/home/ehsan/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-#if [ $? -eq 0 ]; then
-#    eval "$__conda_setup"
-#else
-#    if [ -f "/home/ehsan/anaconda3/etc/profile.d/conda.sh" ]; then
-#        . "/home/ehsan/anaconda3/etc/profile.d/conda.sh"
-#    else
-#        export PATH="/home/ehsan/anaconda3/bin:$PATH"
-#    fi
-#fi
-#unset __conda_setup
+__conda_setup="$('$HOME/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "$HOME/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "$HOME/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="$HOME/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+conda config --set auto_activate_base False 2>/dev/null
 ## <<< conda initialize <<<
-#
 
 ##########################################################
 ####### user defined settings
@@ -195,7 +208,6 @@ alias graph='git log --decorate --oneline --graph --all'
 
 # alias for latexmk
 alias texmake='latexmk -pdf -pvc -interaction=nonstopmode' 
-
 # alias for easycopy
 alias easypath='echo $(pwd) | xclip -i -selection clipboard'
 alias lastcomm='!$:p | xclip -i -selection clipboard'
@@ -204,12 +216,29 @@ alias easypaste='xclip -selection clipboard -o'
 alias easyopen='nemo $(pwd) &'
 
 alias getmonitors='xrandr | grep -w connected'
+alias sshti='ssh zandi@draco.ti.rwth-aachen.de'
 alias sshcore='ssh m3c@10.1.0.1'
 #alias sshcore='ssh m3c@192.168.1.11'
 alias sshenb1='ssh -oHostKeyAlgorithms=+ssh-dss admin@192.168.1.44'
 alias sshenb2='ssh -oHostKeyAlgorithms=+ssh-dss admin@192.168.1.45'
+
+alias rsrpblinq='snmpwalk -v2c -c public 192.168.2.1 pmpDevCpeLteRSRP.0'
+alias rsrpmikro='snmpwalk -v2c -c public 192.168.4.1 mtxrLTEModemSignalRSRP.1'
+
 alias ipa='ip -br -4 a'
 alias ipl='ip -br link'
 alias gettime='date +%Y-%m-%d-%H-%M-%S'
 export PATH=$PATH:/usr/local/go/bin
 alias vlanrm='for i in {1..9}; do sudo ip l del vlan."$i"00 2>/dev/null; done'
+function mvws {
+i3-msg "[workspace=$1]" move workspace to output $2
+}
+function bl {
+if [ "$1" == "off" ]; then
+    bluetoothctl power off
+elif [ "$1" == "bose" ]; then
+    bluetoothctl power on; bluetoothctl connect 60:AB:D2:7A:22:88
+fi
+}
+alias j='jobs'
+alias s='source ~/.bashrc'
