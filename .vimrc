@@ -7,6 +7,9 @@ set autoindent
 "set smartindent
 "vnoremap // y/<C-R>"<CR>
 
+"Reload vimrc
+nmap ,rl :source $MYVIMRC<CR>
+
 " mapps + and - for going misspelled words
 noremap + ]s
 noremap - [s
@@ -40,14 +43,15 @@ set number "acticvates line numbers
 " Advanced tab completion for :
 set wildmenu
 
-"load vim setting for bash files
-autocmd BufNewFile,BufRead *.sh so ~/.vim/bash.vim
-"load vim setting for *.tex files
-autocmd BufNewFile,BufRead *.tex so ~/.vim/latex.vim
-"load vim setting for python files
+""load vim setting for bash files
+"autocmd BufNewFile,BufRead *.sh so ~/.vim/bash.vim
+""load vim setting for *.tex files
+"autocmd BufNewFile,BufRead *.tex so ~/.vim/latex.vim
+""load vim setting for python files
 autocmd BufNewFile,BufRead *.py so ~/.vim/python.vim
-"load vim setting for python files
-autocmd BufNewFile,BufRead *.m so ~/.vim/matlab.vim
+""load vim setting for python files
+"autocmd BufNewFile,BufRead *.m so ~/.vim/matlab.vim
+
 " Show tabs and trailing whitespace visually
 if (&termencoding == "utf-8") || has("gui_running")
 if v:version >= 700
@@ -88,11 +92,60 @@ noremap n %
 filetype plugin on
 syntax on
 colorscheme pink-moon
+highlight Wildmenu   ctermfg=black ctermbg=white
+highlight MatchParen ctermbg=red ctermfg=grey
 "colorscheme mycolor
 
+set wildignore=*.pdf,*.mp3,*.mp4,*.mkv,*.ods,*.odt
 "diffoff
 "if &diff
 "    set scrollbind
 "endif
 "replace XYZ1 with XYZ2
 ":%s/XYZ\zs\(\d\+\)/\=(1+submatch(0))/g
+"
+"
+"
+"Plugins
+" Make sure you use single quotes
+call plug#begin('~/.vim/plugged')
+Plug 'mbbill/undotree'
+Plug 'KarimElghamry/vim-auto-comment'
+call plug#end()
+
+""" Autocomment plugin config
+let g:inline_comment_dict = {
+        \'//': ["js", "ts", "cpp", "c", "dart"],
+        \'#': ['py', 'sh'],
+        \'"': ['vim'],
+        \}
+let g:block_comment_dict = {
+        \'/*': ["js", "ts", "cpp", "c", "dart"],
+        \'"""': ['py'],
+        \}
+let g:autocomment_map_keys = 0
+" Inline comment mapping
+vnoremap <silent><F3> :AutoInlineComment<CR>
+nnoremap <silent><F3> :AutoInlineComment<CR>
+
+" Block comment mapping
+vnoremap <silent><F4> :AutoBlockComment<CR>
+nnoremap <silent><F4> :AutoBlockComment<CR>
+
+
+
+""" Move between tabs
+let mapleader = ","
+"Shortcut to move to tabs
+" Go to tab by number
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
+noremap <leader>6 6gt
+noremap <leader>7 7gt
+noremap <leader>8 8gt
+noremap <leader>9 9gt
+noremap ; gT
+noremap _ gt
