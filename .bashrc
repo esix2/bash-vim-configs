@@ -120,53 +120,6 @@ fi
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
 
-rightdisp=HDMI-A-1#DP-3
-leftdisp=DP-4
-maindisp=eDP-1
-x-main-screen(){
-xrandr --output $maindisp --auto 2>/dev/null
-xrandr --output $leftdisp --off 2>/dev/null
-xrandr --output $leftdisp 2>/dev/null
-}
-
-x-single-screen(){
-xrandr --output $maindisp --off 2>/dev/null
-xrandr --output $leftdisp --off 2>/dev/null
-xrandr --output $rightdisp --auto 2>/dev/null
-}
-x-double-screen(){
-xrandr --output $maindisp --off 2>/dev/null
-xrandr --output $leftdisp --auto 2>/dev/null
-xrandr --output $rightdisp --auto 2>/dev/null
-xrandr --output $leftdisp --primary 2>/dev/null
-xrandr --output $leftdisp --left-of $rightdisp 2>/dev/null
-}
-s-main-screen(){
-sway output $main enable > /dev/null 2>&1
-sway output $rightdisp disable > /dev/null 2>&1
-sway output $leftdisp disable > /dev/null 2>&1
-}
-
-s-single-screen(){
-sway output $maindisp disable > /dev/null 2>&1
-sway output $rightdisp enable > /dev/null 2>&1
-sway output $leftdisp disable > /dev/null 2>&1
-}
-
-single-screen(){
-    if [ ! -z "$(pidof i3)" ]; then
-        xrandr --output $maindisp --off 2>/dev/null
-        xrandr --output $leftdisp --off 2>/dev/null
-    elif [ ! -z "$(pidof sway)" ]; then
-        sway output $main enable > /dev/null 2>&1
-        sway output $rightdisp disable > /dev/null 2>&1
-        sway output $leftdisp disable > /dev/null 2>&1
-    else 
-        echo "This commands does not work on any othe WM than i3 & sway"
-fi
-xrandr --output $rightdisp --auto 2>/dev/null
-}
-
 ## >>> conda initialize >>>
 ## !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('$HOME/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
@@ -203,7 +156,13 @@ setxkbmap -option ctrl:nocaps
 alias ?='whatis'
 
 ### aliases for git
-alias st='git status'
+alias gst='git status'
+alias gadd='git add'
+alias gcomm='git commit -m'
+alias gdiff='git diff'
+alias gcheck='git checkout'
+alias gpull='git pull'
+alias gpush='git push'
 alias graph='git log --decorate --oneline --graph --all'
 
 # alias for latexmk
@@ -230,9 +189,6 @@ alias ipl='ip -br link'
 alias gettime='date +%Y-%m-%d-%H-%M-%S'
 export PATH=$PATH:/usr/local/go/bin
 alias vlanrm='for i in {1..9}; do sudo ip l del vlan."$i"00 2>/dev/null; done'
-function mvws {
-i3-msg "[workspace=$1]" move workspace to output $2
-}
 function bl {
 if [ "$1" == "off" ]; then
     bluetoothctl power off
@@ -242,3 +198,23 @@ fi
 }
 alias j='jobs'
 alias s='source ~/.bashrc'
+export EDITOR=vim
+
+##### To start qutebrowser natively in Wayland
+#export XDG_SESSION_TYPE=wayland 
+#export GDK_BACKEND=wayland
+
+
+
+bind '"\C-f":"cd_with_fzf\n"'
+bind '"\C-o":"open_with_fzf\n"'
+bind '"\C-v":"vim\n"'
+open_with_fzf() {
+    fd -t f -H -I | fzf -m --preview="xdg-mime query default {}" | xargs -ro -d "\n" xdg-open 2>&-
+}
+cd_with_fzf() {
+cd $HOME && cd "$(fd -t d | fzf --preview="tree -L 1 {}" --bind="space:toggle-preview" --preview-window=:hidden)" && echo "$PWD" && tree -L 1
+}
+pacs() {
+sudo pacman -Syy $(pacman -Ssq | fzf -m --preview="pacman -Si {}" --preview-window=:hidden --bind=space:toggle-preview)
+}
