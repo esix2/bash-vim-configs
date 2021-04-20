@@ -1,1 +1,0 @@
-/home/priv/git/mywm/.vim/
