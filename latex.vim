@@ -226,4 +226,5 @@ endfunction
   
  
 " Wildignore
-set wildignore=*.pdf,*.bbl, *.aux, *.log, *.code.tex *.fls *.acn *fdb_lataxml *.ist  *.thm
+set wildignore+=*.pdf,*.bbl,*.aux,*.log,*.code.tex,*.fls,*.acn,*fdb_lataxml,*.ist,*.thm
+set wildignore+=*.ilg,*.blg,*.idx,*.ind
