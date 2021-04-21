@@ -134,7 +134,8 @@ nnoremap <silent><F4> :AutoBlockComment<CR>
 
 
 
-""" Move between tabs
+""" Config for tab
+cmap te tabedit 
 let mapleader = ","
 "Shortcut to move to tabs
 " Go to tab by number
